@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Autómatas Dinámicos</title>
+
+  <!-- Mermaid.js -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    window.mermaid = mermaid;
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Autómatas Dinámicos</h1>
+
+    <form method="POST">
+      <label for="tipo">Selecciona el tipo:</label>
+      <select name="tipo" id="tipo">
+        <option value="identificador" {% if tipo == 'identificador' %}selected{% endif %}>Identificador / Palabra clave</option>
+        <option value="numero" {% if tipo == 'numero' %}selected{% endif %}>Número sin signo</option>
+        <option value="delimitador" {% if tipo == 'delimitador' %}selected{% endif %}>Espacios en blanco</option>
+        <option value="oprel" {% if tipo == 'oprel' %}selected{% endif %}>Operadores relacionales</option>
+      </select>
+
+      <input type="text" name="entrada" id="entrada" placeholder="Escribe algo..." value="{{ entrada }}">
+      <button type="submit">Verificar</button>
+    </form>
+
+    <div id="resultado"
+         class="{% if '' in resultado %}success{% elif '' in resultado %}error{% endif %}">
+      {{ resultado }}
+    </div>
+
+    {% if diagrama %}
+    <div class="mermaid-container">
+      <pre class="mermaid">{{ diagrama | safe }}</pre>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
