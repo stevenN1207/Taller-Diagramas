@@ -2,40 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Autómatas Dinámicos</title>
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    window.mermaid = mermaid;
-    mermaid.initialize({ startOnLoad: true });
-  </script>
+  <title>Analizador De Codigo</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="container">
-    <h1>Autómatas Dinámicos</h1>
+    <h1>Analizador De Codigo</h1>
 
     <form method="POST">
-      <label for="tipo">Selecciona el tipo:</label>
-      <select name="tipo" id="tipo">
-        <option value="identificador" {% if tipo == 'identificador' %}selected{% endif %}>Identificador / Palabra clave</option>
-        <option value="numero" {% if tipo == 'numero' %}selected{% endif %}>Número sin signo</option>
-        <option value="delimitador" {% if tipo == 'delimitador' %}selected{% endif %}>Espacios en blanco</option>
-        <option value="oprel" {% if tipo == 'oprel' %}selected{% endif %}>Operadores relacionales</option>
-      </select>
-
-      <input type="text" name="entrada" id="entrada" placeholder="Escribe algo..." value="{{ entrada }}">
-      <button type="submit">Verificar</button>
+      <textarea name="entrada" rows="4" placeholder="">{{ entrada }}</textarea>
+      <button type="submit">Analizar</button>
     </form>
 
-    <div id="resultado"
-         class="{% if '' in resultado %}success{% elif '' in resultado %}error{% endif %}">
-      {{ resultado }}
-    </div>
-
-    {% if diagrama %}
-    <div class="mermaid-container">
-      <pre class="mermaid">{{ diagrama | safe }}</pre>
-    </div>
+    {% if tokens %}
+    <h2>Resultado:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tipo, valor in tokens %}
+        <tr>
+          <td>{{ tipo }}</td>
+          <td>{{ valor }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {% endif %}
   </div>
 </body>
